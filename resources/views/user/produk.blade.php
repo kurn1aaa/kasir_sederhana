@@ -1,6 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="row g-3 mb-4 d-print-none">
+    <div class="col-md-4">
+        <div class="card p-3 bg-white border-0 shadow-sm" style="border-radius: 12px; border-left: 4px solid #543d2b !important;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <small class="text-muted text-uppercase fw-bold" style="font-size: 11px; letter-spacing: 0.5px;">Total Varian Menu</small>
+                    <h3 class="fw-bold m-0 mt-1 text-dark" style="font-family: 'Plus Jakarta Sans', sans-serif;">{{ $totalVarian }} Varian</h3>
+                </div>
+                <div class="fs-3 text-muted opacity-50">
+                    <i class="fa-solid fa-mug-hot"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3 bg-white border-0 shadow-sm" style="border-radius: 12px; border-left: 4px solid #dc3545 !important;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <small class="text-danger text-uppercase fw-bold" style="font-size: 11px; letter-spacing: 0.5px;">Stok Kritis (< 30)</small>
+                    <h3 class="fw-bold m-0 mt-1 text-danger" style="font-family: 'Plus Jakarta Sans', sans-serif;">{{ $stokKritis }} Menu</h3>
+                </div>
+                <div class="fs-3 text-danger opacity-50">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card p-3 bg-white border-0 shadow-sm" style="border-radius: 12px; border-left: 4px solid #0d6efd !important;">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <small class="text-primary text-uppercase fw-bold" style="font-size: 11px; letter-spacing: 0.5px;">Total Kategori</small>
+                    <h3 class="fw-bold m-0 mt-1 text-primary" style="font-family: 'Plus Jakarta Sans', sans-serif;">{{ $totalKategori }} Kategori</h3>
+                </div>
+                <div class="fs-3 text-primary opacity-50">
+                    <i class="fa-solid fa-tags"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card card-custom p-4 mb-5" style="border: none !important;">
    
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 d-print-none">
@@ -39,7 +83,6 @@
         <div style="border-bottom: 3px double #3d2c25; width: 100%;"></div>
     </div>
 
-    <!-- TABEL DATA UTAMA -->
     <div class="table-responsive" style="overflow-x: visible !important;">
         <table class="table align-middle" style="width: 100% !important;">
             <thead>
@@ -78,16 +121,16 @@
                         </div>
                     </td>
                     <td>
-                        <span class="badge badge-premium bg-coffee-subtle">{{ $p->kategori->nama_kategori }}</span>
+                        <span class="badge bg-coffee-subtle text-dark" style="font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 6px;">{{ $p->kategori->nama_kategori ?? 'Uncategorized' }}</span>
                     </td>
                     <td class="fw-bold text-dark" style="font-size: 15px;">Rp {{ number_format($p->harga, 0, ',', '.') }}</td>
                     <td class="text-center">
                         @if($p->stok < 30)
-                            <span class="badge badge-premium bg-danger-subtle text-danger">
+                            <span class="badge bg-danger-subtle text-danger" style="font-size: 12px; padding: 6px 12px; border-radius: 6px; font-weight: 600;">
                                 Sisa {{ $p->stok }} Porsi
                             </span>
                         @else
-                            <span class="badge badge-premium bg-success-subtle text-success">
+                            <span class="badge bg-success-subtle text-success" style="font-size: 12px; padding: 6px 12px; border-radius: 6px; font-weight: 600;">
                                 Ready ({{ $p->stok }} pcs)
                             </span>
                         @endif
@@ -135,6 +178,10 @@
 <style>
     .hover-danger:hover {
         color: #dc3545 !important;
+    }
+    .bg-coffee-subtle {
+        background-color: #f5efe9 !important;
+        color: #543d2b !important;
     }
     @media print {
         body {

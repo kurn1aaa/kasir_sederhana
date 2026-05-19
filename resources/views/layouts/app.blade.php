@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>coffeeshop.kasir</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Premium Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -29,20 +26,40 @@
             color: #fff; 
             box-shadow: 6px 0 30px rgba(28, 18, 12, 0.04);
         }
+        
+        /* SIDEBAR MENU AESTHETIC */
+        .sidebar-heading {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.25);
+            padding: 0 24px;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
         .sidebar .nav-link { 
             color: rgba(255, 255, 255, 0.45); 
             font-weight: 500; 
             font-size: 14px;
             padding: 12px 20px; 
             border-radius: 14px; 
-            margin: 8px 16px;
+            margin: 4px 16px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sidebar .nav-link i {
+            width: 20px;
+            transition: all 0.3s;
         }
         .sidebar .nav-link:hover, .sidebar .nav-link.active { 
             background: #3a2619; /* Warm Oak */
             color: #fff; 
             transform: translateX(4px);
         }
+        .sidebar .nav-link.active i {
+            color: #eddcd2;
+        }
+        
         .navbar-custom { 
             background-color: rgba(255, 255, 255, 0.85); 
             backdrop-filter: blur(12px);
@@ -53,6 +70,11 @@
             border-radius: 24px; 
             background: #ffffff;
             box-shadow: 0 12px 35px rgba(43, 30, 22, 0.015); 
+            transition: all 0.3s ease;
+        }
+        .card-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(84, 61, 43, 0.04);
         }
         
         /* PREMIUM FLOATING BUTTONS */
@@ -110,54 +132,14 @@
             color: #4a372c;
         }
         .table tr:last-child td { border-bottom: none !important; }
-        .badge-premium {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 6px 14px;
-            border-radius: 8px;
-        }
-
-        /* ===================================================
-           👑 TACTICAL PRINT ENGINE (SOLUSI BIAR GA KEBACOK SETENGAH)
-           =================================================== */
+        
         @media print {
-            /* 1. Hilangkan Navbar Atas, Tombol Logout, dan Sidebar secara absolut */
-            .sidebar, .navbar-custom, .d-print-none {
-                display: none !important;
-            }
-            
-            /* 2. Reset paksa layout kolom Bootstrap agar mengalir penuh 100% layar kertas */
-            .col-md-9, .col-lg-10, .ms-auto {
-                width: 100% !important;
-                margin-left: 0 !important;
-                left: 0 !important;
-                position: relative !important;
-                padding: 0 !important;
-            }
-
-            body {
-                background-color: #ffffff !important;
-                color: #000000 !important;
-                font-size: 12px;
-            }
-
-            /* 3. Hilangkan bayangan card dan border melengkung ekstrim agar rapi di kertas */
-            .card-custom {
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                background: transparent !important;
-            }
-
-            /* 4. Pastikan tabel tidak terpotong di tengah baris (Page Break Optimize) */
-            tr {
-                page-break-inside: avoid !important;
-                page-break-after: auto !important;
-            }
-            
-            thead {
-                display: table-header-group !important; /* Kepala tabel muncul berulang jika kertas lebih dari 1 halaman */
-            }
+            .sidebar, .navbar-custom, .d-print-none { display: none !important; }
+            .col-md-9, .col-lg-10, .ms-auto { width: 100% !important; margin-left: 0 !important; padding: 0 !important; }
+            body { background-color: #ffffff !important; color: #000000 !important; font-size: 12px; }
+            .card-custom { border: none !important; box-shadow: none !important; background: transparent !important; }
+            tr { page-break-inside: avoid !important; }
+            thead { display: table-header-group !important; }
         }
     </style>
 </head>
@@ -165,26 +147,41 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!-- SIDEBAR (Otomatis Hilang Saat Print Berkat d-print-none & CSS) -->
         <div class="col-md-3 col-lg-2 px-0 sidebar d-none d-md-block position-fixed d-print-none">
-            <div class="p-4 text-center border-bottom border-secondary border-opacity-25 mb-3">
+            <div class="p-4 text-center border-bottom border-secondary border-opacity-25 mb-2">
                 <h5 class="fw-bold mb-0 brand-title" style="font-size: 24px;">
                     <i class="fa-solid fa-mug-hot me-2" style="font-size: 18px;"></i>coffeeshop<span style="color: #eddcd2; opacity: 0.5;">.</span>kasir
                 </h5>
                 <small class="text-muted" style="font-size: 10px; letter-spacing: 2.5px; opacity: 0.7;">BARISTA INTERFACE</small>
             </div>
-            <ul class="nav flex-column">
+            
+            <div class="sidebar-heading">Utama</div>
+            <ul class="nav flex-column mb-1">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/{{ auth()->user()->role->nama_role }}/produk">
-                        <i class="fa-solid fa-mug-saucer me-2"></i> Menu & Stok
+                    <a class="nav-link {{ Request::is('*/dashboard') || Request::is('admin') ? 'active' : '' }}" href="/{{ auth()->user()->role->nama_role }}/dashboard">
+                        <i class="fa-solid fa-chart-pie me-2"></i> Dashboard
                     </a>
                 </li>
             </ul>
+            
+            <div class="sidebar-heading">Master Data</div>
+            <ul class="nav flex-column mb-3">
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('*/produk*') ? 'active' : '' }}" href="/{{ auth()->user()->role->nama_role }}/produk">
+                        <i class="fa-solid fa-mug-saucer me-2"></i> Data Produk
+                    </a>
+                </li>
+                @if(auth()->user()->role->nama_role == 'admin')
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('*/kategori*') ? 'active' : '' }}" href="/{{ auth()->user()->role->nama_role }}/kategori">
+                        <i class="fa-solid fa-tags me-2"></i> Kategori Stasiun
+                    </a>
+                </li>
+                @endif
+            </ul>
         </div>
 
-        <!-- MAIN CONTENT AREA (Otomatis Melebar 100% Saat Print) -->
         <div class="col-md-9 col-lg-10 ms-auto px-0">
-            <!-- NAVBAR ATAS (Otomatis Hilang Saat Print Berkat d-print-none) -->
             <nav class="navbar navbar-expand navbar-light navbar-custom px-4 py-3 mb-4 d-print-none">
                 <div class="container-fluid px-0 d-flex justify-content-between">
                     <span class="navbar-text fw-medium text-muted" style="font-size: 14px;">

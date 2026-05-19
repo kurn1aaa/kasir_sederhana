@@ -26,13 +26,14 @@ class ProdukController extends Controller
             $produks = $query->paginate(5); 
         }
 
-        // --- DATA STATISTIK UNTUK DASHBOARD ---
+      
         $totalVarian = Produk::count();
         $stokKritis = Produk::where('stok', '<', 30)->count();
         $totalKategori = Kategori::count();
 
         return view('admin.produk.index', compact('produks', 'search', 'totalVarian', 'stokKritis', 'totalKategori'));
     }
+
     /**
      * Form Tambah Produk
      */
@@ -133,14 +134,17 @@ class ProdukController extends Controller
             $query->where('nama_produk', 'LIKE', '%' . $search . '%');
         }
 
-      
         if ($request->has('printAll')) {
             $produks = $query->get(); 
         } else {
-           
             $produks = $query->paginate(5); 
         }
 
-        return view('user.produk', compact('produks', 'search'));
+
+        $totalVarian = Produk::count();
+        $stokKritis = Produk::where('stok', '<', 30)->count();
+        $totalKategori = Kategori::count();
+
+        return view('user.produk', compact('produks', 'search', 'totalVarian', 'stokKritis', 'totalKategori'));
     }
 }
